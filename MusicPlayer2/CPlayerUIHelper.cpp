@@ -26,13 +26,13 @@ UIColors CPlayerUIHelper::GetUIColors(bool dark, bool draw_alpha)
         colors.color_text_disabled = GRAY(200);
         if (draw_alpha)
         {
-            colors.color_back = GRAY(64);
-            colors.color_panel_back = GRAY(72);
+            colors.color_back = RGB(24, 21, 40);          // 深紫黑 #181528（贴近炫紫神话底色）
+            colors.color_panel_back = RGB(33, 31, 54);   // 深紫面板 #211F36
         }
         else
         {
-            colors.color_back = GRAY(48);
-            colors.color_panel_back = GRAY(56);
+            colors.color_back = RGB(27, 16, 56);         // 深紫 #1B1038（炫紫神话）
+            colors.color_panel_back = RGB(30, 28, 50);   // 深紫灰 #1E1C32
         }
 
         colors.color_lyric_back = theApp.m_app_setting_data.theme_color.dark3;

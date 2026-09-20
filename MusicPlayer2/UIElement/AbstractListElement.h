@@ -106,6 +106,9 @@ namespace UiElement
         std::map<int, IPlayerUI::UIButton> hover_buttons;   //鼠标指向时的按钮
         int last_row_count{};
         int last_row_selected{ -1 };
+        CFont m_bold_font;              //正在播放行使用的粗体字体（懒创建）
+        LOGFONT m_bold_base_lf{};       //粗体字体的基准 LOGFONT（用于检测字体变化后重建）
+        bool m_bold_font_valid{ false };
     private:
         std::vector<int> search_result; //保存搜索结果的序号
         bool searched{};                //是否处于搜索状态

@@ -8,6 +8,7 @@
 #include "AbstractTracksList.h"
 #include "MyFavouriteList.h"
 #include "TinyXml2Helper.h"
+#include "MusicPlayer2.h"   //theApp：字体回退用 m_font_set
 
 void UiElement::AbstractListElement::DrawScrollArea()
 {
@@ -240,10 +241,36 @@ void UiElement::AbstractListElement::DrawScrollArea()
                     if (!draw_mini_spectrum || j > 0)//如果第1列绘制了迷你频谱，则不再绘制文本
                     {
                         DrawAreaGuard guard(&ui->GetDrawer(), clip_rect & rect_text);
+                        //对齐千千静听：正在播放行=白色（加粗），普通行=灰紫
+                        COLORREF item_text_color = RGB(122, 125, 168);  //普通行灰紫 #7A7DA8（采样千千非播放行）
+                        bool is_playing_row = IsHighlightRow(i);
+                        CFont* p_old_font = nullptr;
+                        if (is_playing_row)
+                        {
+                            item_text_color = ColorTable::WHITE;   //播放行白色
+                            //基于当前字体生成粗体副本（懒创建，字体变化时重建）
+                            LOGFONT lf_cur{};
+                            CFont* p_cur_font = ui->GetDrawer().GetFont();
+                            if (p_cur_font != nullptr && p_cur_font->GetSafeHandle() != nullptr)
+                                p_cur_font->GetLogFont(&lf_cur);
+                            else
+                                theApp.m_font_set.GetFontBySize(font_size).GetFont(false).GetLogFont(&lf_cur);
+                            lf_cur.lfWeight = FW_BOLD;
+                            if (!m_bold_font_valid || memcmp(&lf_cur, &m_bold_base_lf, sizeof(LOGFONT)) != 0)
+                            {
+                                m_bold_font.DeleteObject();
+                                m_bold_font.CreateFontIndirect(&lf_cur);
+                                m_bold_base_lf = lf_cur;
+                                m_bold_font_valid = true;
+                            }
+                            p_old_font = ui->GetDrawer().SetFont(&m_bold_font);
+                        }
                         if (!IsMultipleSelected() && i == GetItemSelected() && j == GetColumnScrollTextWhenSelected())
-                            ui->GetDrawer().DrawScrollText(rect_text, display_name.c_str(), ui->GetUIColors().color_text, ui->GetScrollTextPixel(), false, selected_item_scroll_info, false, true);
+                            ui->GetDrawer().DrawScrollText(rect_text, display_name.c_str(), item_text_color, ui->GetScrollTextPixel(), false, selected_item_scroll_info, false, true);
                         else
-                            ui->GetDrawer().DrawWindowText(rect_text, display_name.c_str(), ui->GetUIColors().color_text, Alignment::LEFT, true);
+                            ui->GetDrawer().DrawWindowText(rect_text, display_name.c_str(), item_text_color, Alignment::LEFT, true);
+                        if (p_old_font != nullptr)
+                            ui->GetDrawer().SetFont(p_old_font);   //恢复原字体，不影响其他行
                     }
                     col_x = rect_cell.right;
                 }
