@@ -58,6 +58,7 @@ jobs:
           # 注入自定义皮肤：紫色主题配置 + 背景图
           Copy-Item ./skin_config/config.ini "$exeDir/config.ini" -Force
           Copy-Item ./skin_config/purple_myth.png "$exeDir/purple_myth.png" -Force
+          Copy-Item ./skin_config/global_cfg.ini "$exeDir/global_cfg.ini" -Force
           Push-Location pkg
           $name = Split-Path $exeDir -Leaf
           7z a -mx9 "..\MusicPlayer2-x64-$env:GITHUB_REF_NAME.zip" $name
@@ -117,6 +118,7 @@ jobs:
           # 注入自定义皮肤：紫色主题配置 + 背景图
           Copy-Item ./skin_config/config.ini "$exeDir/config.ini" -Force
           Copy-Item ./skin_config/purple_myth.png "$exeDir/purple_myth.png" -Force
+          Copy-Item ./skin_config/global_cfg.ini "$exeDir/global_cfg.ini" -Force
           Push-Location pkg
           $name = Split-Path $exeDir -Leaf
           7z a -mx9 "..\MusicPlayer2-x86-$env:GITHUB_REF_NAME.zip" $name
