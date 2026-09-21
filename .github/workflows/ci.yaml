@@ -55,6 +55,9 @@ jobs:
           7z x official_x64.zip -opkg -y
           $exeDir = (Get-ChildItem pkg -Recurse -Filter MusicPlayer2.exe | Select-Object -First 1).DirectoryName
           Copy-Item ./x64/Release/MusicPlayer2.exe "$exeDir/MusicPlayer2.exe" -Force
+          # 注入自定义皮肤：紫色主题配置 + 背景图
+          Copy-Item ./skin_config/config.ini "$exeDir/config.ini" -Force
+          Copy-Item ./skin_config/purple_myth.png "$exeDir/purple_myth.png" -Force
           Push-Location pkg
           $name = Split-Path $exeDir -Leaf
           7z a -mx9 "..\MusicPlayer2-x64-$env:GITHUB_REF_NAME.zip" $name
@@ -111,6 +114,9 @@ jobs:
           7z x official_x86.zip -opkg -y
           $exeDir = (Get-ChildItem pkg -Recurse -Filter MusicPlayer2.exe | Select-Object -First 1).DirectoryName
           Copy-Item ./Release/MusicPlayer2.exe "$exeDir/MusicPlayer2.exe" -Force
+          # 注入自定义皮肤：紫色主题配置 + 背景图
+          Copy-Item ./skin_config/config.ini "$exeDir/config.ini" -Force
+          Copy-Item ./skin_config/purple_myth.png "$exeDir/purple_myth.png" -Force
           Push-Location pkg
           $name = Split-Path $exeDir -Leaf
           7z a -mx9 "..\MusicPlayer2-x86-$env:GITHUB_REF_NAME.zip" $name
