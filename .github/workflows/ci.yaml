@@ -67,6 +67,8 @@ jobs:
           }
   build-x86:
     runs-on: windows-2022   # 同上：钉死 VS2022 镜像
+    permissions:
+      contents: write   #同 x64：创建/上传 Release 需要 GITHUB_TOKEN 有写权限
     steps:
       - name: Check Out
         uses: actions/checkout@v4
