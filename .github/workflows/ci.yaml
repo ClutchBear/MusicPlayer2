@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-x64:
-    runs-on: windows-latest
+    runs-on: windows-2022   # windows-latest 已换 VS2026-only 镜像，v143 MFC 装不进去（MSB8041），钉死 VS2022 镜像
     permissions:
       contents: write   #创建 Release 需要 GITHUB_TOKEN 有写权限
     steps:
@@ -66,7 +66,7 @@ jobs:
           cd ../..
           gh release create "$env:GITHUB_REF_NAME" "MusicPlayer2-x64-$env:GITHUB_REF_NAME.zip" "MusicPlayer2.x64.other.7z" --title "MusicPlayer2 $env:GITHUB_REF_NAME" --generate-notes
   build-x86:
-    runs-on: windows-latest
+    runs-on: windows-2022   # 同上：钉死 VS2022 镜像
     steps:
       - name: Check Out
         uses: actions/checkout@v4
